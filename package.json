@@ -7,9 +7,9 @@
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect",
-    "_test": "echo \"Warning: no test specified\" && exit 0",
+    "test": "echo \"Warning: no test specified\" && exit 0",
     "__test": "echo \"Error: no test specified\" && exit 1",
-    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "_test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
@@ -23,7 +23,7 @@
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "keywords": [
-      "inline,install,inlineinstall,webstore,store,chrome,extension"
+    "inline,install,inlineinstall,webstore,store,chrome,extension"
   ],
   "author": "Alexander <alykoshin@gmail.com>",
   "license": "MIT",
@@ -36,15 +36,11 @@
   },
   "homepage": "https://github.com/alykoshin/inline-install",
   "dependencies": {
+    "mini-emitter": "0.0.3"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "coveralls": "^2.11.4",
     "eslint": "^1.10.3",
-    "istanbul": "^0.4.1",
     "jshint": "^2.8.0",
-    "jsinspect": "^0.7.2",
-    "mocha": "^2.3.4",
-    "mockery": "^1.4.0"
+    "jsinspect": "^0.7.2"
   }
 }
