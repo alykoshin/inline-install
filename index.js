@@ -160,5 +160,8 @@ if (typeof module !== 'undefined') {
 }
 
 if (typeof window !== 'undefined') {
-  window.InlineInstall = InlineInstall;
+  window.InlineInstall = function(options) {
+    console.log('window.InlineInstall: deprecated. Use require() instead');
+    return InlineInstall.call(this, options);
+  };
 }

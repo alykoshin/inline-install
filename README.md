@@ -23,6 +23,7 @@ In order to enable Inline Install for the extension, please refer to the link 'U
 - Your site must be on the list of verified sites for this extension 
 For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in 'More Info' section (
 
+!!! This package adds `InlineInstall` to global browser namespace `window`. This is temporarily solution for backward compatibility with WRTC package.
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/inline-install/issues).
 
