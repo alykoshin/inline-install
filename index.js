@@ -143,9 +143,9 @@ var InlineInstall = function(options) {
 
   self.execute = function() {
     if (!window.chrome) {
-      self.on('error', 'You must use Chrome browser to enable Inline Installation for the extensions from Chrome Web Store');
+      self.emit('error', 'You must use Chrome browser to enable Inline Installation for the extensions from Chrome Web Store');
     } else if (!chrome.webstore || !chrome.webstore.install) {
-      self.on('error', 'Your version of Chrome does not support Inline Installation for the extensions from Chrome Web Store');
+      self.emit('error', 'Your version of Chrome does not support Inline Installation for the extensions from Chrome Web Store');
     } else {
       showPrompt(options.text, 'Ok', 'Cancel', doInstall);
     }
