@@ -130,8 +130,7 @@ var InlineInstall = function(options) {
   var doInstall = function() {
     addLink(options.url);
     try {
-      return !!window.chrome && !!chrome.webstore && !!chrome.webstore.install &&
-        chrome.webstore.install(
+      return chrome.webstore.install(
           options.url,
           successCallback,
           failureCallback
@@ -143,7 +142,13 @@ var InlineInstall = function(options) {
   };
 
   self.execute = function() {
-    showPrompt(options.text, 'Ok', 'Cancel', doInstall);
+    if (!window.chrome) {
+      self.on('error', 'You must use Chrome browser to enable Inline Installation for the extensions from Chrome Web Store');
+    } else if (!chrome.webstore || !chrome.webstore.install) {
+      self.on('error', 'Your version of Chrome does not support Inline Installation for the extensions from Chrome Web Store');
+    } else {
+      showPrompt(options.text, 'Ok', 'Cancel', doInstall);
+    }
   };
 
   return self;
