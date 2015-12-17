@@ -128,11 +128,11 @@ var InlineInstall = function(options) {
   };
 
   var doInstall = function() {
-    addLink(self.url);
+    addLink(options.url);
     try {
       return !!window.chrome && !!chrome.webstore && !!chrome.webstore.install &&
         chrome.webstore.install(
-          self.url,
+          options.url,
           successCallback,
           failureCallback
         );

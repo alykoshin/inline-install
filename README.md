@@ -10,7 +10,18 @@
 
 # inline-install
 
-Inline Installation helper (prompt user and install) for Chrome Web Store Extensions
+Inline Installation helper (prompt user and install) for Chrome Web Store Extensions.
+Intended to be used with Browserify.
+
+This package allows to:
+- ask the user for the extension installation (user action is required to allow the installation)
+- add \<link\> element for the extension to document \<head\> (required for the installation) 
+- trigger Chrome extension installation from Chrome Web Store.
+
+In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in 'More Info' section (
+- Inline install option must be enabled for your extension 
+- Your site must be on the list of verified sites for this extension 
+For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in 'More Info' section (
 
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/inline-install/issues).
@@ -24,6 +35,31 @@ npm install --save inline-install
 
 ## Usage
 
+```
+var InlineInstall = require('inline-install');
+
+if ( window.chrome ) {
+  var inlineInstall = new InlineInstall({
+    url:  'https://chrome.google.com/webstore/detail/<itemId>', // URL for the installation. Replace <itemId> with your extension ID
+    text: 'This site requires Chrome Extension to be installed. Proceed?', // Text to show to the user
+    reloadOnSuccess: true  // Reload current page on successful installation 
+  });
+  inlineInstall.on('error', function(error) {
+    alert(error);
+  });
+  inlineInstall.on('error', function() {
+    console.log('Extension successfully installed.');
+  });
+  inlineInstall.execute();
+}
+```
+
+### Events
+
+
+## More Info
+Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
+Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
 
 ## Credits
 [Alexander](https://github.com/alykoshin/)
