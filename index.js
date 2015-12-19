@@ -112,12 +112,16 @@ var InlineInstall = function(options) {
 
 
   var successCallback = function () {
+    chrome.webstore.onInstallStageChanged.removeListener(onInstallStageChanged);
+    chrome.webstore.onDownloadProgress.removeListener(onDownloadProgress);
     self.emit('success');
     location.reload();
   };
 
-  var failureCallback = function (error) {
-    self.emit('error', error);
+  var failureCallback = function (failureDetailString, errorCode) {
+    chrome.webstore.onInstallStageChanged.addListener(onInstallStageChanged);
+    chrome.webstore.onDownloadProgress.addListener(onDownloadProgress);
+    self.emit('error', failureDetailString, errorCode);
   };
 
   var addLink = function(url) {
@@ -127,9 +131,20 @@ var InlineInstall = function(options) {
     document.head.appendChild(a);
   };
 
+  var onInstallStageChanged = function (installStage) {
+    self.emit('installstagechanged', installStage);
+  };
+
+  var onDownloadProgress = function (percentDownloaded) {
+    self.emit('downloadprogress', percentDownloaded);
+  };
+
   var doInstall = function() {
     addLink(options.url);
     try {
+      chrome.webstore.onInstallStageChanged.addListener(onInstallStageChanged);
+      chrome.webstore.onDownloadProgress.addListener(onDownloadProgress);
+
       return chrome.webstore.install(
           options.url,
           successCallback,

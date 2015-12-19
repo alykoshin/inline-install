@@ -40,27 +40,74 @@ npm install --save inline-install
 var InlineInstall = require('inline-install');
 
 if ( window.chrome ) {
+
   var inlineInstall = new InlineInstall({
     url:  'https://chrome.google.com/webstore/detail/<itemId>', // URL for the installation. Replace <itemId> with your extension ID
     text: 'This site requires Chrome Extension to be installed. Proceed?', // Text to show to the user
     reloadOnSuccess: true  // Reload current page on successful installation 
   });
-  inlineInstall.on('error', function(error) {
-    alert(error);
+  
+  inlineInstall.on('error', function(errorString, errorCode) {
+    alert( error + (errorCode || '') );
   });
-  inlineInstall.on('error', function() {
+  
+  inlineInstall.on('downloadprogress', function(percentDownloaded) {
+    console.log('Download Progress: '+percentDownloaded+'%');
+  });
+  
+  inlineInstall.on('installstagechanged', function(installStage) {
+    console.log('Install Stage changed, new stage: \'' + installStage + '\'');
+  });
+  
+  inlineInstall.on('success', function() {
     console.log('Extension successfully installed.');
   });
+  
   inlineInstall.execute();
 }
 ```
 
-### Events
+## Class InlineInstall
+
+This class is used to create Chrome Web Store Extension installation helper.
+
+InlineInstall is a [MiniEmitter](https://www.npmjs.com/package/mini-emitter) with following methods and events:
+
+### Event: 'error'
+- `errorString` - contains string description of error
+- [`errorCode`] - optional, contains error code. More Info: https://developer.chrome.com/extensions/webstore#type-ErrorCode
+Emitted when error occurs.  
+
+### Event: 'downloadprogress'
+- `percentDownloaded` number
+Emitted when extension was successfully installed in browser (triggered when chrome.webstore fires onDownloadProgress event). More Info: https://developer.chrome.com/extensions/webstore#event-onDownloadProgress
+
+### Event: 'installstagechanged'
+- `installStage` - {'installing' or 'downloading'} - The [InstallStage](https://developer.chrome.com/extensions/webstore#type-InstallStage) () that just began.
+Emitted when extension was successfully installed in browser (triggered when chrome.webstore fires onInstallStageChanged event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
+
+### Event: 'success'
+Emitted when extension was successfully installed in browser (triggered when chrome.webstore.install() called success callback). 
+
+### new InlineInstall(options)
+Construct a new object. 
+- options
+-- `url`             - URL for the installation in form 'https://chrome.google.com/webstore/detail/<itemId>'; replace <itemId> with your extension ID
+-- `text`            - Text to show to the user
+-- `reloadOnSuccess` - Reload current page on successful installation
+
+
+### execute()
+- Adds \<link\> to the extension to \<head\> section of the document
+- Prompts user for the permission
+- Triggers the extension installation
+
 
 
 ## More Info
 Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
 Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
+chrome.webstore - https://developer.chrome.com/extensions/webstore
 
 ## Credits
 [Alexander](https://github.com/alykoshin/)
