@@ -13,6 +13,8 @@
 Inline Installation helper (prompt user and install) for Chrome Web Store Extensions.
 Intended to be used with Browserify.
 
+!!! Currently there is no check if the extension is already installed. This check must be done outside of extension before call to `execute()`.
+
 This package allows to:
 - ask the user for the extension installation (user action is required to allow the installation)
 - add \<link\> element for the extension to document \<head\> (required for the installation) 
