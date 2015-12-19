@@ -48,19 +48,19 @@ if ( window.chrome ) {
   });
   
   inlineInstall.on('error', function(errorString, errorCode) {
-    alert( error + (errorCode || '') );
+    alert( 'InlineInstall: Error: ' + errorString + ', code: ' + (errorCode || '') );
   });
   
   inlineInstall.on('downloadprogress', function(percentDownloaded) {
-    console.log('Download Progress: '+percentDownloaded+'%');
+    console.log('InlineInstall: Download Progress: '+percentDownloaded+'%');
   });
   
   inlineInstall.on('installstagechanged', function(installStage) {
-    console.log('Install Stage changed, new stage: \'' + installStage + '\'');
+    console.log('InlineInstall: Install Stage changed, new stage: \'' + installStage + '\'');
   });
   
   inlineInstall.on('success', function() {
-    console.log('Extension successfully installed.');
+    console.log('InlineInstall: Extension successfully installed.');
   });
   
   inlineInstall.execute();
