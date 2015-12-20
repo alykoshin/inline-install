@@ -10,12 +10,10 @@
 
 # inline-install
 
-Inline Installation helper (prompt user and install) for Chrome Web Store Extensions. Intended to be used with Browserify.
-
-!!! Currently there is no check if the extension is already installed. This check must be done outside of extension before call to `execute()`.
+Inline Installation helper (check if installed, prompt user and install) for Chrome Web Store Extensions. Intended to be used with Browserify.
 
 This package allows to:
-- check if the extension is already installed (requires some changes to the extension)
+- check if the extension is already installed (requires minor changes to the extension)
 - ask the user for the extension installation (user action is required to allow the installation)
 - add \<link\> element for the extension to document \<head\> (required for the installation) 
 - trigger Chrome extension installation from Chrome Web Store.
@@ -125,7 +123,7 @@ if ( window.chrome ) {
   });
   
   inlineInstall.on('success', function() {
-    console.log('InlineInstall: Extension successfully installed.');
+    console.log('InlineInstall: Extension is installed.');
   });
   
   inlineInstall.execute();
@@ -155,7 +153,12 @@ Emitted when extension was successfully installed in browser (triggered when `ch
 Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onInstallStageChanged` event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
 
 ### Event: 'success'
-Emitted when extension was successfully installed in browser (triggered when `chrome.webstore.install()` called success callback). 
+Emitted in one of following cases:
+- when extension was already installed before and no action was taken
+- when extension was successfully installed in browser during the last call to `execute()` (triggered when `chrome.webstore.install()` called success callback). 
+
+At the moment there is no option to differentiate between this two situations.
+
 
 ### new InlineInstall(options)
 - Parameter `options` is an object consisting of following properties:
@@ -172,6 +175,7 @@ Construct a new object.
 
 ### execute()
 Main method, executing following:
+- Checks if the extension is already installed
 - Adds \<link\> to the extension to \<head\> section of the document
 - Prompts user for the permission
 - Starts the extension installation
@@ -184,6 +188,11 @@ Main method, executing following:
 - Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
 - chrome.webstore - https://developer.chrome.com/extensions/webstore
 
+
+## Todo
+- Replace `checkInstalled()` with `checkVersion()`
+- Provide info if the extension was installed before or just now, during this call to `execute()`
+- Add one more call to `checkInstalled()` after the extension installation which was reported as successful by `chrome.webstore.install()`.
 
 ## Credits
 [Alexander](https://github.com/alykoshin/)

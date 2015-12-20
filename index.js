@@ -113,11 +113,6 @@ var InlineInstall = function(options) {
 
   };
 
-  self.init = function() {
-
-  };
-
-
   var successCallback = function () {
     chrome.webstore.onInstallStageChanged.removeListener(onInstallStageChanged);
     chrome.webstore.onDownloadProgress.removeListener(onDownloadProgress);
