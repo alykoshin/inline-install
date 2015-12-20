@@ -25,11 +25,11 @@ var InlineInstall = function(options) {
   var self = this;
   Emitter(self);
 
-  if (!options || !options.id) {
+  if (!options || !options.itemId) {
     throw 'InlineInstall: execute(): options and options.id are mandatory.';
   }
   var baseStoreUrl = 'https://chrome.google.com/webstore/detail/';
-  options.url = baseStoreUrl + options.id;
+  var extensionUrl = baseStoreUrl + options.itemId;
   options.text = options.text || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
   options.reloadOnSuccess = options.reloadOnSuccess || true;
 
@@ -142,16 +142,16 @@ var InlineInstall = function(options) {
   };
 
   var doInstall = function() {
-    addLink(options.url);
+    addLink(extensionUrl);
     try {
       chrome.webstore.onInstallStageChanged.addListener(onInstallStageChanged);
       chrome.webstore.onDownloadProgress.addListener(onDownloadProgress);
 
       return chrome.webstore.install(
-          options.url,
-          successCallback,
-          failureCallback
-        );
+        extensionUrl,
+        successCallback,
+        failureCallback
+      );
     } catch (e) {
       failureCallback(e);
       return false;
