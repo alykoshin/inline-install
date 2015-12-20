@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Created by alykoshin on 9/30/14.
  */
@@ -18,7 +16,7 @@ if ( typeof module !== 'undefined' && typeof require !== 'undefined') {
  *
  * @param options
  * @param {string} options.url                     - URL to Extension in Chrome Web Store
- * @param {string} [options.text='This site requires Chrome Extension to be installed. Proceed with the installation?]                  - text to show to the user
+ * @param {string} [options.text='This site requires Chrome Extension to be installed. Proceed with the installation?] - text to show to the user
  * @param {boolean} [options.reloadOnSuccess=true] - Reload page on success
  * @returns {InlineInstall}
  * @constructor
@@ -115,7 +113,9 @@ var InlineInstall = function(options) {
     chrome.webstore.onInstallStageChanged.removeListener(onInstallStageChanged);
     chrome.webstore.onDownloadProgress.removeListener(onDownloadProgress);
     self.emit('success');
-    location.reload();
+    if (options.reloadOnSuccess) {
+      location.reload();
+    }
   };
 
   var failureCallback = function (failureDetailString, errorCode) {

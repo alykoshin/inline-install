@@ -82,40 +82,43 @@ Emitted when error occurs.
 
 ### Event: 'downloadprogress'
 - `percentDownloaded` number
-Emitted when extension was successfully installed in browser (triggered when chrome.webstore fires onDownloadProgress event). More Info: https://developer.chrome.com/extensions/webstore#event-onDownloadProgress
+Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onDownloadProgress` event). More Info: https://developer.chrome.com/extensions/webstore#event-onDownloadProgress
 
 ### Event: 'installstagechanged'
-- `installStage` - {'installing' or 'downloading'} - The [InstallStage](https://developer.chrome.com/extensions/webstore#type-InstallStage) () that just began.
-Emitted when extension was successfully installed in browser (triggered when chrome.webstore fires onInstallStageChanged event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
+- `installStage` - {'installing' or 'downloading'} - The [InstallStage](https://developer.chrome.com/extensions/webstore#type-InstallStage) that just began.
+Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onInstallStageChanged` event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
 
 ### Event: 'success'
-Emitted when extension was successfully installed in browser (triggered when chrome.webstore.install() called success callback). 
+Emitted when extension was successfully installed in browser (triggered when `chrome.webstore.install()` called success callback). 
 
 ### new InlineInstall(options)
+- Parameter `options` is an object consisting of following properties:
+  - `url`             - URL for the installation in form 'https://chrome.google.com/webstore/detail/<itemId>'; replace <itemId> with your extension ID
+  - `text`            - Text to prompt the user
+  - `reloadOnSuccess` - Reload current page on successful installation
 Construct a new object. 
-- options
--- `url`             - URL for the installation in form 'https://chrome.google.com/webstore/detail/<itemId>'; replace <itemId> with your extension ID
--- `text`            - Text to show to the user
--- `reloadOnSuccess` - Reload current page on successful installation
 
 
 ### execute()
+Main method, executing following:
 - Adds \<link\> to the extension to \<head\> section of the document
 - Prompts user for the permission
-- Triggers the extension installation
-
+- Starts the extension installation
+- Proxies `chrome.webstore` events and errors to own events 
+- Reloads page on successful installation (if `reloadOnSuccess` set to `true`) with `location.reload()`
 
 
 ## More Info
-Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
-Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
-chrome.webstore - https://developer.chrome.com/extensions/webstore
+- Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
+- Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
+- chrome.webstore - https://developer.chrome.com/extensions/webstore
+
 
 ## Credits
 [Alexander](https://github.com/alykoshin/)
 
 
-# Links to package pages:
+## Links to package pages:
 
 [github.com](https://github.com/alykoshin/inline-install) &nbsp; [npmjs.com](https://www.npmjs.com/package/inline-install) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/inline-install) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/inline-install) &nbsp; [inch-ci.org](https://inch-ci.org/github/alykoshin/inline-install)
 
