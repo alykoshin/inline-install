@@ -15,7 +15,7 @@ if ( typeof module !== 'undefined' && typeof require !== 'undefined') {
 /**
  *
  * @param options
- * @param {string} options.url                     - URL to Extension in Chrome Web Store
+ * @param {string} options.itemId                  - itemId of the Extension in Chrome Web Store
  * @param {string} [options.text='This site requires Chrome Extension to be installed. Proceed with the installation?] - text to show to the user
  * @param {boolean} [options.reloadOnSuccess=true] - Reload page on success
  * @returns {InlineInstall}
@@ -25,9 +25,11 @@ var InlineInstall = function(options) {
   var self = this;
   Emitter(self);
 
-  if (!options || !options.url) {
-    throw 'InlineInstall: execute(): options and options.url are mandatory.';
+  if (!options || !options.id) {
+    throw 'InlineInstall: execute(): options and options.id are mandatory.';
   }
+  var baseStoreUrl = 'https://chrome.google.com/webstore/detail/';
+  options.url = baseStoreUrl + options.id;
   options.text = options.text || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
   options.reloadOnSuccess = options.reloadOnSuccess || true;
 

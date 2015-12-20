@@ -20,12 +20,14 @@ This package allows to:
 - add \<link\> element for the extension to document \<head\> (required for the installation) 
 - trigger Chrome extension installation from Chrome Web Store.
 
-In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in 'More Info' section (
+In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in '[More Info](https://github.com/alykoshin/inline-install#more-info)' section.
 - Inline install option must be enabled for your extension 
 - Your site must be on the list of verified sites for this extension 
+
 For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in 'More Info' section (
 
 !!! This package adds `InlineInstall` to global browser namespace `window`. This is temporarily solution for backward compatibility with WRTC package.
+
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/inline-install/issues).
 
@@ -44,13 +46,18 @@ var InlineInstall = require('inline-install');
 if ( window.chrome ) {
 
   var inlineInstall = new InlineInstall({
-    url:  'https://chrome.google.com/webstore/detail/<itemId>', // URL for the installation. Replace <itemId> with your extension ID
-    text: 'This site requires Chrome Extension to be installed. Proceed?', // Text to show to the user
-    reloadOnSuccess: true  // Reload current page on successful installation 
+    // Extension ID in Chrome Web Store. Replace <itemId> with your Extension ID 
+    // (it is a part of extension url 'https://chrome.google.com/webstore/detail/<itemId>')
+    itemId: <itemId>,
+    // Text to show to the user
+    text: 'This site requires Chrome Extension to be installed. Proceed?', 
+    // Reload current page in browser after successful installation    
+    reloadOnSuccess: true   
   });
   
   inlineInstall.on('error', function(errorString, errorCode) {
-    alert( 'InlineInstall: Error: ' + errorString + ', code: ' + (errorCode || '') );
+    alert( 'InlineInstall: Error: ' + errorString + 
+      ', code: ' + (errorCode || '') );
   });
   
   inlineInstall.on('downloadprogress', function(percentDownloaded) {
@@ -58,7 +65,8 @@ if ( window.chrome ) {
   });
   
   inlineInstall.on('installstagechanged', function(installStage) {
-    console.log('InlineInstall: Install Stage changed, new stage: \'' + installStage + '\'');
+    console.log('InlineInstall: Install Stage changed'+
+      ', new stage: \'' + installStage + '\'');
   });
   
   inlineInstall.on('success', function() {
@@ -78,14 +86,17 @@ InlineInstall is a [MiniEmitter](https://www.npmjs.com/package/mini-emitter) wit
 ### Event: 'error'
 - `errorString` - contains string description of error
 - [`errorCode`] - optional, contains error code. More Info: https://developer.chrome.com/extensions/webstore#type-ErrorCode
+
 Emitted when error occurs.  
 
 ### Event: 'downloadprogress'
 - `percentDownloaded` number
+
 Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onDownloadProgress` event). More Info: https://developer.chrome.com/extensions/webstore#event-onDownloadProgress
 
 ### Event: 'installstagechanged'
 - `installStage` - {'installing' or 'downloading'} - The [InstallStage](https://developer.chrome.com/extensions/webstore#type-InstallStage) that just began.
+
 Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onInstallStageChanged` event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
 
 ### Event: 'success'
@@ -96,6 +107,7 @@ Emitted when extension was successfully installed in browser (triggered when `ch
   - `url`             - URL for the installation in form 'https://chrome.google.com/webstore/detail/<itemId>'; replace <itemId> with your extension ID
   - `text`            - Text to prompt the user
   - `reloadOnSuccess` - Reload current page on successful installation
+  
 Construct a new object. 
 
 
