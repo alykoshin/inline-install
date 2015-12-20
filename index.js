@@ -16,8 +16,11 @@ if ( typeof module !== 'undefined' && typeof require !== 'undefined') {
  *
  * @param options
  * @param {string} options.itemId                  - itemId of the Extension in Chrome Web Store
- * @param {string} [options.text='This site requires Chrome Extension to be installed. Proceed with the installation?] - text to show to the user
+ * @param {boolean} [options.checkInstalled=true]  - Check if the extension is already installed in the browser
  * @param {boolean} [options.reloadOnSuccess=true] - Reload page on success
+ * @param {string} [options.prompt.text='This site requires Chrome Extension to be installed. Proceed with the installation?] - Text to show to the user
+ * @param {string} [options.prompt.ok='OK]         - OK button text
+ * @param {string} [options.prompt.cancel='Cancel] - Cancel button text
  * @returns {InlineInstall}
  * @constructor
  */
@@ -30,8 +33,12 @@ var InlineInstall = function(options) {
   }
   var baseStoreUrl = 'https://chrome.google.com/webstore/detail/';
   var extensionUrl = baseStoreUrl + options.itemId;
-  options.text = options.text || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
-  options.reloadOnSuccess = options.reloadOnSuccess || true;
+  options.prompt = options.prompt || {};
+  options.prompt.text   = options.prompt.text   || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
+  options.prompt.ok     = options.prompt.ok     || 'OK';
+  options.prompt.cancel = options.prompt.cancel || 'Cancel';
+  if (typeof options.checkInstalled  === 'undefined') { options.checkInstalled  = true; }
+  if (typeof options.reloadOnSuccess === 'undefined') { options.reloadOnSuccess = true; }
 
   var h = 40; // Prompt height
 
@@ -141,6 +148,16 @@ var InlineInstall = function(options) {
     self.emit('downloadprogress', percentDownloaded);
   };
 
+  var checkInstalled = function(responseCb) {
+    chrome.runtime.sendMessage(
+      options.id,
+      { message: 'inline-install-check' },
+      function (reply) {
+        var isInstalled = reply && reply.installed;
+        responseCb( isInstalled );
+      });
+  };
+
   var doInstall = function() {
     addLink(extensionUrl);
     try {
@@ -164,7 +181,17 @@ var InlineInstall = function(options) {
     } else if (!chrome.webstore || !chrome.webstore.install) {
       self.emit('error', 'Your version of Chrome does not support Inline Installation for the extensions from Chrome Web Store');
     } else {
-      showPrompt(options.text, 'Ok', 'Cancel', doInstall);
+      if (options.checkInstalled) {
+        checkInstalled(function(isInstalled) {
+          if (isInstalled) {
+            self.emit('success');
+          } else {
+            showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
+          }
+        });
+      } else {
+        showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
+      }
     }
   };
 

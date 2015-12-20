@@ -10,23 +10,21 @@
 
 # inline-install
 
-Inline Installation helper (prompt user and install) for Chrome Web Store Extensions.
-Intended to be used with Browserify.
+Inline Installation helper (prompt user and install) for Chrome Web Store Extensions. Intended to be used with Browserify.
 
 !!! Currently there is no check if the extension is already installed. This check must be done outside of extension before call to `execute()`.
 
 This package allows to:
+- check if the extension is already installed (requires some changes to the extension)
 - ask the user for the extension installation (user action is required to allow the installation)
 - add \<link\> element for the extension to document \<head\> (required for the installation) 
 - trigger Chrome extension installation from Chrome Web Store.
 
-In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in '[More Info](https://github.com/alykoshin/inline-install#more-info)' section.
-- Inline install option must be enabled for your extension 
-- Your site must be on the list of verified sites for this extension 
 
-For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in 'More Info' section (
+Compatibility note
 
 !!! This package adds `InlineInstall` to global browser namespace `window`. This is temporarily solution for backward compatibility with WRTC package.
+
 
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/inline-install/issues).
@@ -40,17 +38,74 @@ npm install --save inline-install
 
 ## Usage
 
+## Prerequisites
+
+In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in '[More Info](#more-info)' section.
+- Inline install option must be enabled for your extension 
+- Your site must be on the list of verified sites for this extension 
+- Enable automatic check if the extension is already installed in browser (see below)
+
+### Enable automatic check if extension is already installed in browser 
+
+#### Step1. Add to background page of your extension following code:
+
+```js
+// start of checkInstalled handler of InlineInstall package
+// https://www.npmjs.com/package/inline-install
+chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponseCb) {
+  if (request && request.message && request.message === 'inline-install-check') {
+    sendResponseCb({
+      installed: true
+    });
+  }
+  return true;
+});
+// end of checkInstalled handler
+```
+
+You may also add new script (for example, if you do not have yet background pages in your extension), like `bInlineInstall.js` containing only the code above and add this file name to `background` `scripts` array of your `manifest.json` to make it looking like below:
+
+```
+  "background": {
+    "scripts": [
+      "bInlineInstall.js"
+    ],
+    "persistent": false
+  },
+```
+
+#### Step 2. Add an entry to the `manifest.json` list of the allowed domains:
+
+```json
+  "externally_connectable": {
+    "matches": [
+      "*://localhost/*",
+      "*://127.0.0.1/*",
+      "*://wrtc.ru/*"
+    ]
+  },
+},
+```
+
+For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in '[More Info](#more-info)' section
+
+
 ```
 var InlineInstall = require('inline-install');
 
 if ( window.chrome ) {
 
   var inlineInstall = new InlineInstall({
-    // Extension ID in Chrome Web Store. Replace <itemId> with your Extension ID 
+    // Extension Id in Chrome Web Store. Replace <itemId> with your Extension ID 
     // (it is a part of extension url 'https://chrome.google.com/webstore/detail/<itemId>')
     itemId: <itemId>,
-    // Text to show to the user
-    text: 'This site requires Chrome Extension to be installed. Proceed?', 
+    // Check if the extension is already installed in the browser
+    checkInstalled: true,
+    // Object defining the prompt to be show to the user
+    prompt: {
+      // Prompt text
+      text: 'This site requires Chrome Extension to be installed. Proceed?'
+    },
     // Reload current page in browser after successful installation    
     reloadOnSuccess: true   
   });
@@ -104,9 +159,13 @@ Emitted when extension was successfully installed in browser (triggered when `ch
 
 ### new InlineInstall(options)
 - Parameter `options` is an object consisting of following properties:
-  - `url`             - URL for the installation in form 'https://chrome.google.com/webstore/detail/<itemId>'; replace <itemId> with your extension ID
-  - `text`            - Text to prompt the user
-  - `reloadOnSuccess` - Reload current page on successful installation
+  - `itemId`          - Extension Id in Chrome Web Store (it is a part of extension url 'https://chrome.google.com/webstore/detail/<itemId>')
+  - `checkInstalled`  - Check if the extension is already installed in the browser (default: `true`)
+  - `prompt`          - Object defining the prompt to be shown to the user, containing of following properties:
+    - `text`          - Text to prompt the user (default: 'This site requires Chrome Extension to be installed. Proceed with the installation?')
+    - `ok`            - Optional, OK button text (default: 'OK')
+    - `cancel`        - Optional, Cancel button text (default: 'Cancel')
+  - `reloadOnSuccess` - Reload current page on successful installation (default: `true`)
   
 Construct a new object. 
 
