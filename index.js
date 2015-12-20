@@ -150,7 +150,7 @@ var InlineInstall = function(options) {
 
   var checkInstalled = function(responseCb) {
     chrome.runtime.sendMessage(
-      options.id,
+      options.itemId,
       { message: 'inline-install-check' },
       function (reply) {
         var isInstalled = reply && reply.installed;
