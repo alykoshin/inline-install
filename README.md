@@ -94,8 +94,9 @@ var InlineInstall = require('inline-install');
 if ( window.chrome ) {
 
   var inlineInstall = new InlineInstall({
-    // Extension Id in Chrome Web Store. Replace <itemId> with your Extension ID 
-    // (it is a part of extension url 'https://chrome.google.com/webstore/detail/<itemId>')
+    // Extension Id in Chrome Web Store. Replace <itemId> with your 
+    // value which is a part of extension url 
+    // 'https://chrome.google.com/webstore/detail/<itemId>'
     itemId: <itemId>,
     // Check if the extension is already installed in the browser
     checkInstalled: true,
@@ -162,7 +163,7 @@ At the moment there is no option to differentiate between this two situations.
 
 ### new InlineInstall(options)
 - Parameter `options` is an object consisting of following properties:
-  - `itemId`          - Extension Id in Chrome Web Store (it is a part of extension url 'https://chrome.google.com/webstore/detail/<itemId>')
+  - `itemId`          - Extension Id in Chrome Web Store which is a part of extension url 'https://chrome.google.com/webstore/detail/\<itemId\>'
   - `checkInstalled`  - Check if the extension is already installed in the browser (default: `true`)
   - `prompt`          - Object defining the prompt to be shown to the user, containing of following properties:
     - `text`          - Text to prompt the user (default: 'This site requires Chrome Extension to be installed. Proceed with the installation?')
