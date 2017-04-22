@@ -20,6 +20,7 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
    * @param {string} options.itemId                  - itemId of the Extension in Chrome Web Store
    * @param {boolean} [options.checkInstalled=true]  - Check if the extension is already installed in the browser
    * @param {boolean} [options.reloadOnSuccess=true] - Reload page on success
+   * @param {boolean} [options.prompt.enabled=true]  - Text to show to the user
    * @param {string} [options.prompt.text='This site requires Chrome Extension to be installed. Proceed with the installation?] - Text to show to the user
    * @param {string} [options.prompt.ok='OK]         - OK button text
    * @param {string} [options.prompt.cancel='Cancel] - Cancel button text
@@ -36,8 +37,9 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
     var baseStoreUrl      = 'https://chrome.google.com/webstore/detail/';
     var extensionUrl      = baseStoreUrl + options.itemId;
     options.prompt        = options.prompt || {};
-    options.prompt.text   = options.prompt.text || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
-    options.prompt.ok     = options.prompt.ok || 'OK';
+    if (typeof options.prompt.enabled !== 'boolean') options.prompt.enabled = true;
+    options.prompt.text   = options.prompt.text   || 'This site requires Chrome Extension to be installed. Proceed with the installation?';
+    options.prompt.ok     = options.prompt.ok     || 'OK';
     options.prompt.cancel = options.prompt.cancel || 'Cancel';
     if (typeof options.checkInstalled === 'undefined') {
       options.checkInstalled = true;
@@ -191,11 +193,13 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
             if (isInstalled) {
               self.emit('success');
             } else {
-              showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
+              if (options.prompt.enabled)
+                showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
             }
           });
         } else {
-          showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
+          if (options.prompt.enabled)
+            showPrompt(options.prompt.text, options.prompt.ok, options.prompt.cancel, doInstall);
         }
       }
     };

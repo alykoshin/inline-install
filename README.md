@@ -38,7 +38,7 @@ npm install --save inline-install
 
 ## Prerequisites
 
-In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in '[More Info](#more-info)' section.
+In order to enable Inline Install for the extension, please refer to 'Using Inline Installation' in '[More Info](#more-info)' section.
 - Inline install option must be **enabled** for your extension at extension page in Developer Dashboard: 
  ![doc/img/this-item-must-use-inline-install.png](doc/img/this-item-must-use-inline-install.png)
 - Your site must be on the list of verified sites for this extension 
@@ -85,7 +85,7 @@ You may also add new script (for example, if you do not have yet background page
 },
 ```
 
-For more info on configuring Inline Install for Chrome extensions please refer to the link 'Using Inline Installation' in '[More Info](#more-info)' section
+For more info on configuring Inline Install for Chrome extensions please refer to 'Using Inline Installation' in '[More Info](#more-info)' section
 
 
 ```
@@ -102,6 +102,9 @@ if ( window.chrome ) {
     checkInstalled: true,
     // Object defining the prompt to be show to the user
     prompt: {
+      // Inline Install must be initiated by user action; if you start the installation by some user action,
+      // you may set `prompt.enabled` to `false` to avoid default prompt to be shown
+      enabled: false,
       // Prompt text
       text: 'This site requires Chrome Extension to be installed. Proceed?'
     },
@@ -137,23 +140,31 @@ This class is used to create Chrome Web Store Extension installation helper.
 
 InlineInstall is a [MiniEmitter](https://www.npmjs.com/package/mini-emitter) with following methods and events:
 
+
 ### Event: 'error'
+
 - `errorString` - contains string description of error
 - [`errorCode`] - optional, contains error code. More Info: https://developer.chrome.com/extensions/webstore#type-ErrorCode
 
 Emitted when error occurs.  
 
+
 ### Event: 'downloadprogress'
+
 - `percentDownloaded` number
 
 Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onDownloadProgress` event). More Info: https://developer.chrome.com/extensions/webstore#event-onDownloadProgress
 
+
 ### Event: 'installstagechanged'
+
 - `installStage` - {'installing' or 'downloading'} - The [InstallStage](https://developer.chrome.com/extensions/webstore#type-InstallStage) that just began.
 
 Emitted when extension was successfully installed in browser (triggered when `chrome.webstore` fires `onInstallStageChanged` event). More Info: https://developer.chrome.com/extensions/webstore#event-onInstallStageChanged 
 
+
 ### Event: 'success'
+
 Emitted in one of following cases:
 - when extension was already installed before and no action was taken
 - when extension was successfully installed in browser during the last call to `execute()` (triggered when `chrome.webstore.install()` called success callback). 
@@ -162,6 +173,7 @@ At the moment there is no option to differentiate between this two situations.
 
 
 ### new InlineInstall(options)
+
 - Parameter `options` is an object consisting of following properties:
   - `itemId`          - Extension Id in Chrome Web Store which is a part of extension url 'https://chrome.google.com/webstore/detail/\<itemId\>'
   - `checkInstalled`  - Check if the extension is already installed in the browser (default: `true`)
@@ -177,7 +189,7 @@ Construct a new object.
 ### execute()
 Main method, executing following:
 - Checks if the extension is already installed
-- Adds \<link\> to the extension to \<head\> section of the document
+- Adds `<link>` element referencing the extension to `<head>` section of the document
 - Prompts user for the permission
 - Starts the extension installation
 - Proxies `chrome.webstore` events and errors to own events 
@@ -185,17 +197,22 @@ Main method, executing following:
 
 
 ## More Info
+
 - Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
 - Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
 - chrome.webstore - https://developer.chrome.com/extensions/webstore
 - Packaging https://developer.chrome.com/extensions/packaging
-
+                              
+                              
 ## Todo
+
 - Replace `checkInstalled()` with `checkVersion()`
 - Provide info if the extension was installed before or just now, during this call to `execute()`
 - Add one more call to `checkInstalled()` after the extension installation which was reported as successful by `chrome.webstore.install()`.
 
+
 ## Credits
+
 [Alexander](https://github.com/alykoshin/)
 
 
