@@ -1,15 +1,15 @@
 {
   "name": "inline-install",
   "version": "0.3.3",
-  "description": "Inline Installation helper (prompt user and install) for Chrome Web Store Extensions",
-  "main": "app/index.js",
+  "description": "Inline Installation helper (check if installed, prompt user and install) for Chrome Web Store Extensions",
+  "main": "./index.js",
   "scripts": {
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect",
     "test": "echo \"Warning: no test specified\" && exit 0",
     "__test": "echo \"Error: no test specified\" && exit 1",
-    "_test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "_test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
@@ -39,8 +39,8 @@
     "mini-emitter": "0.0.3"
   },
   "devDependencies": {
-    "eslint": "^1.10.3",
-    "jshint": "^2.8.0",
-    "jsinspect": "^0.7.2"
+    "eslint": "^3.19.0",
+    "jshint": "^2.9.4",
+    "jsinspect": "^0.12.4"
   }
 }

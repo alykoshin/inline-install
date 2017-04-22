@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "InlineInstall demo",
+  "description": "This is the demo extension for https://github.com/alykoshin/inline-install package",
+  "minimum_chrome_version": "34",
+  "version": "1.0.0.0",
+  "homepage_url": "https://github.com/alykoshin/inline-install",
+  "permissions": [
+  ],
+  "icons": {
+    "128": "icon.png"
+  },
+  "web_accessible_resources": [
+    "icon.png"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://localhost/*",
+      "*://127.0.0.1/*",
+      "*://github.com/alykoshin/*"
+    ]
+  },
+  "background": {
+    "scripts": [
+      "bMain.js",
+      "bInlineInstall.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "cMain.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

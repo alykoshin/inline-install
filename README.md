@@ -39,13 +39,14 @@ npm install --save inline-install
 ## Prerequisites
 
 In order to enable Inline Install for the extension, please refer to the link 'Using Inline Installation' in '[More Info](#more-info)' section.
-- Inline install option must be enabled for your extension 
+- Inline install option must be **enabled** for your extension at extension page in Developer Dashboard: 
+ ![doc/img/this-item-must-use-inline-install.png](doc/img/this-item-must-use-inline-install.png)
 - Your site must be on the list of verified sites for this extension 
 - Enable automatic check if the extension is already installed in browser (see below)
 
 ### Enable automatic check if extension is already installed in browser 
 
-#### Step1. Add to background page of your extension following code:
+#### Step 1. Add to background page of your extension following code:
 
 ```js
 // start of checkInstalled handler of InlineInstall package
@@ -78,8 +79,7 @@ You may also add new script (for example, if you do not have yet background page
   "externally_connectable": {
     "matches": [
       "*://localhost/*",
-      "*://127.0.0.1/*",
-      "*://wrtc.ru/*"
+      "*://127.0.0.1/*"
     ]
   },
 },
@@ -188,7 +188,7 @@ Main method, executing following:
 - Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
 - Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
 - chrome.webstore - https://developer.chrome.com/extensions/webstore
-
+- Packaging https://developer.chrome.com/extensions/packaging
 
 ## Todo
 - Replace `checkInstalled()` with `checkVersion()`
