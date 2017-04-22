@@ -1,6 +1,6 @@
 {
   "name": "inline-install",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Inline Installation helper (check if installed, prompt user and install) for Chrome Web Store Extensions",
   "main": "./index.js",
   "scripts": {
