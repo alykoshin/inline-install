@@ -104,7 +104,7 @@ if ( window.chrome ) {
     prompt: {
       // Inline Install must be initiated by user action; if you start the installation by some user action,
       // you may set `prompt.enabled` to `false` to avoid default prompt to be shown
-      enabled: false,
+      enabled: true,
       // Prompt text
       text: 'This site requires Chrome Extension to be installed. Proceed?'
     },
@@ -178,9 +178,13 @@ At the moment there is no option to differentiate between this two situations.
   - `itemId`          - Extension Id in Chrome Web Store which is a part of extension url 'https://chrome.google.com/webstore/detail/\<itemId\>'
   - `checkInstalled`  - Check if the extension is already installed in the browser (default: `true`)
   - `prompt`          - Object defining the prompt to be shown to the user, containing of following properties:
-    - `text`          - Text to prompt the user (default: 'This site requires Chrome Extension to be installed. Proceed with the installation?')
-    - `ok`            - Optional, OK button text (default: 'OK')
-    - `cancel`        - Optional, Cancel button text (default: 'Cancel')
+    - `enabled`       - Inline Install must be initiated by user action;
+                        if you start this installation code by some user action,
+                        you may set `prompt.enabled` to `false` to avoid default prompt to be shown
+                        (default: `true`)
+    - `text`          - Text to prompt the user (default: `This site requires Chrome Extension to be installed. Proceed with the installation?`)
+    - `ok`            - Optional, OK button text (default: `OK`)
+    - `cancel`        - Optional, Cancel button text (default: `Cancel`)
   - `reloadOnSuccess` - Reload current page on successful installation (default: `true`)
   
 Construct a new object. 
@@ -199,9 +203,9 @@ Main method, executing following:
 ## More Info
 
 - Using Inline Installation - https://developer.chrome.com/webstore/inline_installation
-- Developer Dashboard - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
-- chrome.webstore - https://developer.chrome.com/extensions/webstore
-- Packaging https://developer.chrome.com/extensions/packaging
+- Developer Dashboard       - Chrome Web Store - https://chrome.google.com/webstore/developer/dashboard/
+- chrome.webstore           - https://developer.chrome.com/extensions/webstore
+- Packaging                 - https://developer.chrome.com/extensions/packaging
                               
                               
 ## Todo
